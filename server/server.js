@@ -3,11 +3,12 @@ import colors from 'colors'
 import cors from "cors";
 import 'dotenv/config'
 import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const app =express()
 
 app.use(cors({
-    origin:process.env.FRONTEND_URL || '*',
+    origin: process.env.FRONTEND_URL || '*',
     methods :['GET','POST',"PUT","DELETE"],
     allowedHeaders:["Content-Type", "Authorization"]
 }));
@@ -16,6 +17,7 @@ connectDB()
 const PORT = process.env.PORT || 5000;
 
 //node -e " console.log(require('crypto').randomBytes(64).toString('hex'))"
+app.use('/api/auth', authRoutes)
 app.get('/',async (req, res) => {
     res.send('Hello MERN DEV!')
 })
