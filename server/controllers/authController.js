@@ -7,7 +7,7 @@ const generateToken = (id) => {
 };
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find({});
     if (!users) {
       return res.status(404).json({ message: "user not found!" });
     }
@@ -74,9 +74,9 @@ const loginUser = async (req, res) => {
 
 //get user info
 
-const getUserInfo = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.params.id).select("-password");
     if (!user) {
       return res.status(404).json({ message: "user not found!" });
     }
@@ -88,5 +88,5 @@ const getUserInfo = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser};
+export { registerUser, loginUser, getUserById, getUsers};
 
