@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import incomeRoutes from "./routes/incomeRoutes.js";
 import expenseRoutes from "./routes/expenseRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 import { fileURLToPath } from 'url';
 import express from 'express'; // Assuming express is imported elsewhere
@@ -28,6 +29,7 @@ const PORT = process.env.PORT || 5000;
 app.use('/api/auth', authRoutes)
 app.use('/api/income', incomeRoutes)
 app.use('/api/expense', expenseRoutes)
+app.use('/api/dashboard', dashboardRoutes)
 app.use("/uploads",express.static(path.join(__dirname, "uploads")));
 app.get('/',async (req, res) => {
     res.send('Hello MERN DEV!')
