@@ -10,18 +10,31 @@ import expenseRoutes from "./routes/expenseRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 import { fileURLToPath } from 'url';
-import express from 'express'; // Assuming express is imported elsewhere
+import express from 'express';
+
+
+const app =express()
+
+// app.use((req, res, next) => {
+//     console.log(`[Before CORS] Method: ${req.method}, URL: ${req.url}`);
+//     next();
+// });
+app.use(cors({
+    origin: 'https://improved-orbit-7vxgprp7jqg4cpqxp-5173.app.github.dev' ,
+    credentials: true,
+    optionsSuccessStatus: 204,
+    methods :['GET','POST',"PUT","DELETE","OPTIONS"],
+    allowedHeaders:["Content-Type","Accept", "Authorization", 'Acess-Control-Allow-Origin', 'X-Requesst-With'],
+    exposedHeaders: ['Content-Type','X-Content-Range']
+}));
+// app.use((req, res, next) => { 
+//     console.log(`[After CORS] Method: ${req.method}, URL: ${req.url}`); 
+//     next(); 
+// });
+app.use(express.json()); 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const app =express()
-
-app.use(cors({
-    origin: process.env.FRONTEND_URL || '*',
-    methods :['GET','POST',"PUT","DELETE"],
-    allowedHeaders:["Content-Type", "Authorization"]
-}));
-app.use(express.json());
 connectDB()
 const PORT = process.env.PORT || 5000;
 

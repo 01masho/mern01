@@ -1,9 +1,11 @@
 
 import React, { useState } from 'react'
 import AuthLayout from '../../components/layouts/AuthLayout'
-import { Link, useNavigate} from 'react-router-dom'
+import { Link, UNSAFE_ErrorResponseImpl, useNavigate} from 'react-router-dom'
 import Input from '../../components/Inputs/Input'
 import { validatedEmail } from '../../utils/helper'
+import axiosInstance from '../../utils/axiosInstance'
+import { API_PATHS } from '../../utils/apiPaths'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -22,9 +24,25 @@ const Login = () => {
           return;
         }
         setError('')
-        navigate('/login')
+        //login api call 
+        try {
+        const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, { email, password,}, {withCredentials: true});
+        const {token}= response.data; 
+        if(token){
+          localStorage.setItem("token", token);
+          navigate('/dashboard');
+        }  
+        } catch (error) {
+          console.log(error.response.data.message)
+          if(error.response && error.response.data.message){
+            setError(error.response.data.message);
+          }else {
+            setError('something is wrong. Please try again.')
+          }
+        } 
     }
-//login api call    }
+  
+
   return (
     <AuthLayout >
         <div className='lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center' >
